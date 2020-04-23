@@ -24,6 +24,8 @@
 
 print('AppEngine Version: ' .. Engine.getVersion())
 
+local DELAY = 100 -- ms between each type for demonstration purpose
+
 -- Creating viewer
 local viewer = View.create()
 
@@ -55,7 +57,7 @@ local function main()
   viewer:clear()
   local imageID = viewer:addImage(img)
   viewer:present()
-  Script.sleep(100)
+  Script.sleep(DELAY)
 
   -- Line
   local startLine = Point.create(0, 330)
