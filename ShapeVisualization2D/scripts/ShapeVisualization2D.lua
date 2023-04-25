@@ -6,24 +6,19 @@ print('AppEngine Version: ' .. Engine.getVersion())
 local DELAY = 100 -- ms between each type for demonstration purpose
 
 -- Creating viewer
-local viewer = View.create("viewer2D1")
+local viewer = View.create()
 
 -- Setting up graphical overlay attributes
 local shapeDecoration = View.ShapeDecoration.create()
-shapeDecoration:setLineColor(0, 255, 0) -- Green
-shapeDecoration:setPointSize(16)
-shapeDecoration:setLineWidth(5)
-shapeDecoration:setFillColor(0, 255, 0, 60) -- Transparent green
+shapeDecoration:setPointSize(16):setLineColor(0, 255, 0) -- Green
+shapeDecoration:setLineWidth(5):setFillColor(0, 255, 0, 60) -- Transparent green
 
 local intersectionDecoration = View.ShapeDecoration.create()
 intersectionDecoration:setLineColor(255, 0, 0) -- Red
-intersectionDecoration:setPointType('DOT')
-intersectionDecoration:setPointSize(16)
+intersectionDecoration:setPointType('DOT'):setPointSize(16)
 
-local pointDecoration = View.ShapeDecoration.create()
-pointDecoration:setLineColor(0, 0, 255) -- Blue
-pointDecoration:setPointType('DOT')
-pointDecoration:setPointSize(16)
+local pointDecoration = View.ShapeDecoration.create():setPointSize(16)
+pointDecoration:setPointType('DOT'):setLineColor(0, 0, 255) -- Blue
 
 --End of Global Scope-----------------------------------------------------------
 
@@ -34,7 +29,7 @@ local function main()
   local W, H = img:getSize() -- get image height and width
   img:setAll(0.0)
   viewer:clear()
-  local imageID = viewer:addImage(img)
+  viewer:addImage(img)
   viewer:present()
   Script.sleep(DELAY)
 
@@ -42,33 +37,31 @@ local function main()
   local startLine = Point.create(0, 330)
   local endLine = Point.create(W, 50)
   local line = Shape.createLineSegment(startLine, endLine)
-  viewer:addShape(line, shapeDecoration, nil, imageID)
-  viewer:addShape(startLine, pointDecoration, nil, imageID)
-  viewer:addShape(endLine, pointDecoration, nil, imageID)
+  viewer:addShape(line, shapeDecoration)
+  viewer:addShape(startLine, pointDecoration)
+  viewer:addShape(endLine, pointDecoration)
 
   -- Circle
   local circleCenter = Point.create(100, 100)
   local circle = Shape.createCircle(circleCenter, 50)
-  viewer:addShape(circle, shapeDecoration, nil, imageID)
-  viewer:addShape(circleCenter, pointDecoration, nil, imageID)
+  viewer:addShape(circle, shapeDecoration)
+  viewer:addShape(circleCenter, pointDecoration)
 
   -- Ellipse
   local ellipseCenter = Point.create(180, 320)
   local ellipse = Shape.createEllipse(ellipseCenter, 40, 200, 0.7)
-  viewer:addShape(ellipse, shapeDecoration, nil, imageID)
-  viewer:addShape(ellipseCenter, pointDecoration, nil, imageID)
+  viewer:addShape(ellipse, shapeDecoration)
+  viewer:addShape(ellipseCenter, pointDecoration)
 
   -- Intersections between line and ellipse
   local intersections1 = Shape.getIntersectionPoints(line, ellipse)
-  for _, point in ipairs(intersections1) do
-    viewer:addShape(point, intersectionDecoration, nil, imageID)
-  end
+  viewer:addShape(intersections1, intersectionDecoration)
 
   -- Rectangle
   local rectCenter = Point.create(450, 80)
   local rect = Shape.createRectangle(rectCenter, 150, 40, 0.2)
-  viewer:addShape(rect, shapeDecoration, nil, imageID)
-  viewer:addShape(rectCenter, pointDecoration, nil, imageID)
+  viewer:addShape(rect, shapeDecoration)
+  viewer:addShape(rectCenter, pointDecoration)
 
   -- Polygon
   local polyPoints = {Point.create(600, 200),
@@ -78,10 +71,8 @@ local function main()
                      Point.create(700, 300),
                      Point.create(720, 200)}
   local polygon = Shape.createPolyline(polyPoints, true)
-  viewer:addShape(polygon, shapeDecoration, nil, imageID)
-  for _, point in ipairs(polyPoints) do
-    viewer:addShape(point, pointDecoration, nil, imageID)
-  end
+  viewer:addShape(polygon, shapeDecoration)
+  viewer:addShape(polyPoints, pointDecoration)
 
   -- Polyline
   local polyPoints2 = {Point.create(395, 300),
@@ -90,28 +81,24 @@ local function main()
                        Point.create(430, 550),
                        Point.create(505, 550),}
   local polyline = Shape.createPolyline(polyPoints2, false)
-  viewer:addShape(polyline, shapeDecoration, nil, imageID)
-  for _, point in ipairs(polyPoints2) do
-    viewer:addShape(point, pointDecoration, nil, imageID)
-  end
+  viewer:addShape(polyline, shapeDecoration)
+  viewer:addShape(polyPoints2, pointDecoration)
 
   -- Arc
   local arcCenter = Point.create(550, 460)
   local arc = Shape.createArc(arcCenter, 120, -2.5, 2.5)
-  viewer:addShape(arc, shapeDecoration, nil, imageID)
-  viewer:addShape(arcCenter, pointDecoration, nil, imageID)
+  viewer:addShape(arc, shapeDecoration)
+  viewer:addShape(arcCenter, pointDecoration)
 
   -- Intersections between polygon and arc
   local intersections2 = Shape.getIntersectionPoints(polygon, arc)
-  for _, point in ipairs(intersections2) do
-    viewer:addShape(point, intersectionDecoration, nil, imageID)
-  end
+  viewer:addShape(intersections2, intersectionDecoration)
 
   -- Sector
   local sectorCenter = Point.create(250, 470)
   local sector = Shape.createSector(sectorCenter, 50, 90, 1.2, 2)
-  viewer:addShape(sector, shapeDecoration, nil, imageID)
-  viewer:addShape(sectorCenter, pointDecoration, nil, imageID)
+  viewer:addShape(sector, shapeDecoration)
+  viewer:addShape(sectorCenter, pointDecoration)
 
   viewer:present()
   print('App finished.')
